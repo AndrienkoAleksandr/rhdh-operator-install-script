@@ -1,0 +1,55 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: app-config-rhdh
+  namespace: rhdh-operator
+data:
+  "app-config-rhdh.yaml": |
+    app:
+      title: Red Hat Developer Hub
+      baseUrl: https://backstage-developer-hub-rhdh-operator.apps.rosa.eu4ex-fkpbu-v4n.mx0i.p3.openshiftapps.com
+    backend:
+      auth:
+        keys:
+          - secret: "${BACKEND_SECRET}"
+      baseUrl: https://backstage-developer-hub-rhdh-operator.apps.rosa.eu4ex-fkpbu-v4n.mx0i.p3.openshiftapps.com
+      cors:
+        origin: https://backstage-developer-hub-rhdh-operator.apps.rosa.eu4ex-fkpbu-v4n.mx0i.p3.openshiftapps.com
+    integrations:
+      github:
+        - host: github.com
+          apps:
+            - appId: ${GITHUB_APP_APP_ID}
+              clientId: ${GITHUB_APP_CLIENT_ID}
+              clientSecret: ${GITHUB_APP_CLIENT_SECRET}
+              webhookUrl: ${GITHUB_APP_WEBHOOK_URL}
+              webhookSecret: ${GITHUB_APP_WEBHOOK_SECRET}
+              privateKey: |
+                ${GITHUB_APP_PRIVATE_KEY}
+    # signInPage: bitbucket
+    auth:
+      # see https://backstage.io/docs/auth/ to learn about auth providers
+      environment: development
+      providers:
+        bitbucket:
+          development:
+            clientId: ${AUTH_BITBUCKET_CLIENT_ID}
+            clientSecret: ${AUTH_BITBUCKET_CLIENT_SECRET}
+        github:
+          development:
+            clientId: ${AUTH_GITHUB_CLIENT_ID}
+            clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+
+    catalog:
+      import:
+        entityFilename: catalog-info.yaml
+        pullRequestBranchName: backstage-integration
+      rules:
+        - allow: [Component, System, Group, User, Resource, Location, Template, API]
+      locations:
+        - type: url
+          target: https://github.com/AndrienkoAleksandr/catalog-model/blob/rbac/examples/all.yaml
+        - type: url
+          target: https://github.com/AndrienkoAleksandr/catalog-model/blob/rbac/examples/acme-corp.yaml
+          rules:
+            - allow: [User, Group]
