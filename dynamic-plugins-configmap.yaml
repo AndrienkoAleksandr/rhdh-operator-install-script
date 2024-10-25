@@ -1,0 +1,30 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: dynamic-plugins-rhdh
+  namespace: rhdh
+data:
+  dynamic-plugins.yaml: |
+    includes:
+      - dynamic-plugins.default.yaml
+    plugins:
+      - package: ./dynamic-plugins/dist/janus-idp-backstage-plugin-rbac
+        disabled: false
+        pluginConfig:
+          dynamicPlugins:
+            frontend:
+              janus-idp.backstage-plugin-rbac:
+                mountPoints:
+                  - mountPoint: admin.page.rbac/cards
+                    module: RbacPlugin
+                    importName: RbacPage
+                    config:
+                      layout:
+                        gridColumn: "1 / -1"
+                        width: 100vw
+                      props:
+                        useHeader: false
+                dynamicRoutes:
+                  - path: /admin/rbac
+                    module: RbacPlugin
+                    importName: RbacPage
