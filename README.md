@@ -5,7 +5,13 @@ Openshift cluster with installed RHDH operator. Installed yq, oc.
 yq - (https://github.com/mikefarah/yq) can be installed with help of Python package manager: 
 
 ```
-pip install yq
+brew install yq
+```
+
+or:
+
+```
+snap install yq
 ```
 
 # How to use
