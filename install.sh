@@ -2,6 +2,9 @@
 
 # inject .env file variables
 source .env
+source utils.sh
+
+install_rhdh_operator
 
 oc apply -f namespace.yaml
 
