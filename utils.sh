@@ -5,9 +5,9 @@ install_rhdh_operator() {
 
     DISPLAY_NAME="Red Hat Developer Hub Operator"
     if oc get csv -n "openshift-operators" | grep -q "${DISPLAY_NAME}"; then
-    echo "Red Hat OpenShift Pipelines operator is already installed."
+    echo "RHDH operator is already installed."
     else
-    echo "Red Hat OpenShift Pipelines operator is not installed. Installing..."
+    echo "RHDH operator is not installed. Installing..."
     oc apply -f "./rhdh-operator-group.yaml"
     oc apply -f "./rhdh-operator-subscription.yaml"
     fi
