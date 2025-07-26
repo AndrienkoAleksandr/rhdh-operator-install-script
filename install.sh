@@ -19,6 +19,7 @@ oc create secret generic secrets-rhdh \
   --from-file=GITHUB_APP_PRIVATE_KEY="$GITHUB_APP_PRIVATE_KEY" \
   --from-literal=AUTH_GITHUB_CLIENT_ID="$AUTH_GITHUB_CLIENT_ID" \
   --from-literal=AUTH_GITHUB_CLIENT_SECRET="$AUTH_GITHUB_CLIENT_SECRET" \
+  --from-literal=GITHUB_TOKEN="$GITHUB_TOKEN" \
   -n rhdh \
   --dry-run=client -o yaml | oc apply -f -
 
@@ -28,4 +29,7 @@ oc apply -f app-config-rhdh.yaml -f dynamic-plugins-configmap.yaml
 # Operator will install it.
 CR="$(pwd)/backstage-cr.yaml"
 echo "${CR}"
-yq eval ".spec.application.image = \"${IMAGE}\"" "${CR}"  | oc apply -f -
+yq eval ".spec.deployment.patch.spec.template.spec.containers[0].image = \"${IMAGE}\"" "${CR}" \
+| yq eval ".spec.deployment.patch.spec.template.spec.initContainers[0].image = \"${IMAGE}\"" \
+| yq eval ".spec.deployment.patch.spec.template.spec.initContainers[1].image = \"${IMAGE}\"" \
+| oc apply -f -
