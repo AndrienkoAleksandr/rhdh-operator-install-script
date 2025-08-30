@@ -11,7 +11,7 @@ data:
     backend:
       auth:
         keys:
-          - secret: "${BACKEND_SECRET}"
+          - secret: "a-very-long-and-super-secret-string-for-rhdh"
       baseUrl: https://backstage-developer-hub-rhdh.${DOMAIN}
       cors:
         origin: https://backstage-developer-hub-rhdh.${DOMAIN}
